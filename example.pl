@@ -1,5 +1,5 @@
 #!/usr/bin/env perl
-
+a
 
 use FindBin qw($Bin);
 use lib "$Bin/lib";
@@ -11,7 +11,7 @@ my $sms = NSMS::API->new(
    debug => 0
 );
 
-$sms->to('1183329923');
-$sms->text('teste de sms');
-print $sms->send;
+#$sms->to('1188220000');
+#$sms->text('teste de sms');
+print $sms->send('118822000', 'teste de sms');
 

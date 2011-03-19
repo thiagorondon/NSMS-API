@@ -101,7 +101,9 @@ sub auth {
 }
 
 sub send {
-    my $self = shift;
+    my ($self, $to, $text) = @_;
+    $self->to($to) if $to;
+    $self->text($text) if $text;
     $self->auth unless $self->has_auth;
     warn $self->url_sendsms if $self->debug;
     my $content = get($self->url_sendsms);
