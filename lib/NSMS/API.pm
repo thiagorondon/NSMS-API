@@ -8,8 +8,17 @@ use Carp;
 use Data::Dumper;
 
 use URI::Escape;
-use LWP::Simple;
+use HTTP::Request::Common;
+use HTTP::Response;
+use LWP::UserAgent;
 use JSON;
+
+has ua => (
+    is => 'rw',
+    isa => 'Object',
+    lazy => 1,
+    default => sub { LWP::UserAgent->new }
+);
 
 has username => (
     is       => 'rw',
@@ -83,8 +92,9 @@ has has_auth => (
 );
 
 sub json_to_struct {
-    my $self = shift;
-    my $st   = decode_json(shift);
+    my ($self, $ret) = @_;
+    $ret = $ret->content if ref($ret) eq 'HTTP::Response';
+    my $st   = decode_json($ret);
     print Dumper($st) if $self->debug;
     return $st;
 }
@@ -92,7 +102,7 @@ sub json_to_struct {
 sub auth {
     my $self = shift;
     warn $self->url_auth if $self->debug;
-    my $content = get( $self->url_auth );
+    my $content = $self->ua->get( $self->url_auth );
     my $ret     = $self->json_to_struct($content);
     return undef unless $ret->{sms}{ok};
     $self->has_auth(1);
@@ -105,7 +115,7 @@ sub send {
     $self->text($text) if $text;
     $self->auth unless $self->has_auth;
     warn $self->url_sendsms if $self->debug;
-    my $content = get( $self->url_sendsms );
+    my $content = $self->ua->get( $self->url_sendsms );
     my $ret     = $self->json_to_struct($content);
     return $ret->{sms}{ok} || undef;
 }
