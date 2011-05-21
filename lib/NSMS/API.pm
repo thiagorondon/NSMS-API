@@ -71,17 +71,16 @@ has url_sendsms => (
           . '?to=55'
           . $self->to
           . '&content='
-          . uri_escape($self->text);
+          . uri_escape( $self->text );
 
     }
 );
 
 has has_auth => (
-    is => 'rw',
-    isa => 'Bool',
+    is      => 'rw',
+    isa     => 'Bool',
     default => 0
 );
-
 
 sub json_to_struct {
     my $self = shift;
@@ -93,7 +92,7 @@ sub json_to_struct {
 sub auth {
     my $self = shift;
     warn $self->url_auth if $self->debug;
-    my $content = get($self->url_auth);
+    my $content = get( $self->url_auth );
     my $ret     = $self->json_to_struct($content);
     return undef unless $ret->{sms}{ok};
     $self->has_auth(1);
@@ -101,12 +100,12 @@ sub auth {
 }
 
 sub send {
-    my ($self, $to, $text) = @_;
-    $self->to($to) if $to;
+    my ( $self, $to, $text ) = @_;
+    $self->to($to)     if $to;
     $self->text($text) if $text;
     $self->auth unless $self->has_auth;
     warn $self->url_sendsms if $self->debug;
-    my $content = get($self->url_sendsms);
+    my $content = get( $self->url_sendsms );
     my $ret     = $self->json_to_struct($content);
     return $ret->{sms}{ok} || undef;
 }
