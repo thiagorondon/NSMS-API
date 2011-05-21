@@ -1,5 +1,4 @@
 #!/usr/bin/env perl
-a
 
 use FindBin qw($Bin);
 use lib "$Bin/lib";
