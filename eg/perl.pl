@@ -1,9 +1,6 @@
 #!/usr/bin/env perl
 
 use strict;
-
-use FindBin qw($Bin);
-use lib "$Bin/lib";
 use NSMS::API;
 
 my $sms = NSMS::API->new(

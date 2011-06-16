@@ -12,8 +12,7 @@ use HTTP::Response;
 use LWP::UserAgent;
 use JSON;
 
-# ABSTRACT: API para enviar SMS através da NSMS (http://www.nsms.com.br/)
-
+# ABSTRACT: API para enviar SMS atrav&eacute;s da NSMS (http://www.nsms.com.br/)
 # VERSION
 
 =head1 SYNOPSIS
@@ -109,7 +108,7 @@ Número de destino. (DDD + Número)
 =cut
 
 subtype 'NSMS_Number' => as 'Str' => where { $_ =~ /^[0-9]{10}$/ } =>
-  message { "The number you provider, $_, was not a mobile number" };
+    message {"The number you provider, $_, was not a mobile number"};
 
 has to => (
     is  => 'rw',
@@ -123,7 +122,7 @@ Mensagem para ser enviada, até 140 caracteres.
 =cut
 
 subtype 'NSMS_Message' => as 'Str' => where { length($_) < 140 } =>
-  message { "The lenght of message has more then 140 chars." };
+    message {"The lenght of message has more then 140 chars."};
 
 has text => (
     is  => 'rw',
@@ -146,11 +145,11 @@ has url_sendsms => (
     lazy    => 1,
     default => sub {
         my $self = shift;
-        join( '/', $self->baseurl, 'get', 'json' )
-          . '?to=55'
-          . $self->to
-          . '&content='
-          . uri_escape( $self->text );
+        join( '/', $self->baseurl, 'get', 'json' ) 
+            . '?to=55'
+            . $self->to
+            . '&content='
+            . uri_escape( $self->text );
 
     }
 );
