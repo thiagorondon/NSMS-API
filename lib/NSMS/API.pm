@@ -35,7 +35,17 @@ use utf8;
 
 =head1 DESCRIÇÃO
 
-NSMS::API é uma simples API para enviar sms através da plataforma oferecida pela NSMS, com este módulo você pode usufruir de pequenas operações para facilitar a integração com o seu sistema de forma rápida.
+HTTP API é a forma mais popular entre os desenvolvedores quando querem
+efetuar integraçõe utilizando uma API, por que existem várias maneiras de se
+utilizar, facilitadores e módulos disponiveis nas diversas linguagens,
+software e etc. Ela pode ser utilizada tanto com um baixo, como com um alto
+volume de mensagens.
+
+Esta é uma implementação na linguagem Perl da comunicação via SMS, e para
+utilizar ela, basta ter uma conta na NSMS (http://www.nsms.com.br).
+
+A documentação completa desta API esta disponível em:
+L<http://www.nsms.com.br/doc/NSMS_Especificacao_HTTP_API.pdf>
 
 Para mais informações sobre a empresa e o produto, veja L<http://www.nsms.com.br>
 
@@ -88,6 +98,19 @@ has baseurl => (
     is      => 'rw',
     isa     => 'Str',
     default => 'http://api.nsms.com.br/api',
+);
+
+=head2 extra
+
+Informação adicionar para ser inserida no histórico da mensagem, geralmente utilizado
+para efetuar centro de custo.
+
+=cut
+
+has extra => (
+    is => 'rw',
+    isa => 'Str',
+    default => ''
 );
 
 =head2 debug
@@ -150,7 +173,9 @@ has url_sendsms => (
             . '?to=55'
             . $self->to
             . '&content='
-            . uri_escape( $self->text );
+            . uri_escape( $self->text )
+            . '&extra='
+            . uri_escape ( $self->extra );
 
     }
 );
