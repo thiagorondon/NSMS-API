@@ -13,7 +13,7 @@ use LWP::UserAgent;
 use JSON;
 use utf8;
 
-# ABSTRACT: API para enviar SMS atrav&eacute;s da NSMS (http://www.nsms.com.br/)
+# ABSTRACT: API para enviar SMS através da NSMS (http://www.nsms.com.br/)
 # VERSION
 
 =head1 SYNOPSIS
